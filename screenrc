@@ -1,0 +1,8 @@
+startup_message off # Turn off the splash screen
+autodetach on # Autodetach session on hangup instead of terminating screen completely
+
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %m/%d %c ]%{W}"
+
+escape ^Gg
