@@ -4,11 +4,11 @@
 (setq user-mail-address "clarkeje@gmail.com")
 
 
-;; assumes erc installed via macports
+;;assumes erc installed via macports
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/erc")
 (require 'erc-auto)
 
-
+;;assume color-theme.el installed via macports
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/color-theme-6.6.0")
 (require 'color-theme)
 (eval-after-load "color-theme"
@@ -16,15 +16,21 @@
      (color-theme-initialize)
      (color-theme-gnome2)))
 
-;;flyspell text modes
+;;flyspell text modes assumes aspell installed via macports
 (setq-default ispell-program-name "/opt/local/bin/aspell")
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 
-(require 'cl)
+;;git stuff assumes git-core installed via macports
+(add-to-list 'load-path "/opt/local/share/doc/git-core/contrib/emacs")
+(require 'git)
+(require 'git-blame)
 
+;;assumes auctex installed
 (require 'tex-site)
+
+(require 'cl)
 
 ;; because filenames are not unique
 (require 'uniquify)
