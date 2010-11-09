@@ -4,6 +4,11 @@
 (setq user-mail-address "clarkeje@gmail.com")
 
 
+;; assumes erc installed via macports
+(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/erc")
+(require 'erc-auto)
+
+
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/color-theme-6.6.0")
 (require 'color-theme)
 (eval-after-load "color-theme"
