@@ -22,6 +22,7 @@
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 
+
 (require 'cl)
 
 (require 'tex-site)
@@ -39,6 +40,17 @@
 
 ;; omg it is the font stuff!
 (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
+
+;; visual bell
+(setq visible-bell t)
+(setq visible-bell 'top-bottom)
+(defun my-bell-function ()
+  (unless (memq this-command
+        '(isearch-abort abort-recursive-edit exit-minibuffer
+              keyboard-quit mwheel-scroll down up next-line previous-line
+              backward-char forward-char))
+    (ding)))
+(setq ring-bell-function 'my-bell-function)
 
 ;; sometimes I like line numbers on the left
 (require 'linum)
