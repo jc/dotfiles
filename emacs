@@ -1,3 +1,4 @@
+;; -*- mode: lisp -*-
 (setq debug-on-error nil)
 (setq inhibit-startup-message t)
 (setq user-full-name "James Clarke")
@@ -26,6 +27,15 @@
 (add-to-list 'load-path "/opt/local/share/doc/git-core/contrib/emacs")
 (require 'git)
 (require 'git-blame)
+
+;; magit https://github.com/philjackson/magit
+(require 'magit)
+
+;; markdown-mode http://jblevins.org/git/markdown-mode.git/plain/markdown-mode.el
+(autoload 'markdown-mode "markdown-mode.el"
+   "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+   (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
 ;;assumes auctex installed
 (require 'tex-site)
@@ -204,3 +214,16 @@
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
                                            'fullboth))) 
+
+;; hyde note
+(defun hyde-new-note()
+  "Init a new note entry"
+  (interactive)
+  (insert "{% extends \"_post.html\" %}\n{% hyde\ntitle:\ncreated: ")
+  (insert (format-time-string "%Y-%m-%d %H:%M:%S"))
+  (insert "\n%}\n{% block article %}\n")
+  (insert "<div class=\"photo\"></div>\n")
+  (insert "<blockquote><p> &mdash; <cite></cite>.</p></blockquote>\n")
+  (insert "\n{% endblock %}")
+  (forward-line -3)
+)
