@@ -4,7 +4,6 @@
 (setq user-full-name "James Clarke")
 (setq user-mail-address "clarkeje@gmail.com")
 
-
 ;;assumes erc installed via macports
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/erc")
 (require 'erc-auto)
@@ -30,6 +29,12 @@
 
 ;; magit https://github.com/philjackson/magit
 (require 'magit)
+
+;; dsvn
+;; http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el
+(autoload 'svn-status "dsvn" "Run `svn status'." t)
+(autoload 'svn-update "dsvn" "Run `svn update'." t)
+(require 'vc-svn)
 
 ;; markdown-mode http://jblevins.org/git/markdown-mode.git/plain/markdown-mode.el
 (autoload 'markdown-mode "markdown-mode.el"
