@@ -27,6 +27,10 @@
 (require 'git)
 (require 'git-blame)
 
+;;gist assumes https://github.com/defunkt/gist.el
+(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/gist.el")
+(require 'gist)
+
 ;; magit https://github.com/philjackson/magit
 (require 'magit)
 
@@ -35,6 +39,23 @@
 (autoload 'svn-status "dsvn" "Run `svn status'." t)
 (autoload 'svn-update "dsvn" "Run `svn update'." t)
 (require 'vc-svn)
+
+;; smart-tab https://github.com/genehack/smart-tab
+(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/smart-tab")
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+(add-to-list 'smart-tab-disabled-major-modes 'eshell-mode)
+
+;; simplenote https://github.com/cefstat/simplenote.el
+(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/simplenote.el")
+(require 'simplenote)
+(simplenote-setup)
+
+;; auto revert modified files
+(global-auto-revert-mode 1)
+
+;; type less yes or no?
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; markdown-mode http://jblevins.org/git/markdown-mode.git/plain/markdown-mode.el
 (autoload 'markdown-mode "markdown-mode.el"
@@ -54,28 +75,32 @@
 (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
 
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier 'meta)
+;; mac setup
+(setq mac-command-modifier 'meta) ;; command is meta
+(setq mac-option-modifier 'meta) ;; option is meta
 (setq x-select-enable-clipboard t)
 
 ;; omg it is the font stuff!
 (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
 
 ;; visual bell
-(setq visible-bell t)
-(setq visible-bell 'top-bottom)
-(defun my-bell-function ()
-  (unless (memq this-command
-        '(isearch-abort abort-recursive-edit exit-minibuffer
-              keyboard-quit mwheel-scroll down up next-line previous-line
-              backward-char forward-char))
-    (ding)))
-(setq ring-bell-function 'my-bell-function)
+;(setq visible-bell t)
+;(setq visible-bell 'top-bottom)
+;(defun my-bell-function ()
+;  (unless (memq this-command
+;        '(isearch-abort abort-recursive-edit exit-minibuffer
+;              keyboard-quit mwheel-scroll down up next-line previous-line
+;              backward-char forward-char))
+;    (ding)))
+;(setq ring-bell-function 'my-bell-function)
 
 ;; sometimes I like line numbers on the left
 (require 'linum)
 
+;; shell stuff
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+;; don't write over my prompt (don't confuse me!)
+(setq comint-prompt-read-only)
 
 ;; cua mode customization
 (cua-mode t)
@@ -83,8 +108,18 @@
 (setq cua-highlight-region-shift-only t) ;; no transient mark mode
 (cua-selection-mode t)
 
-
+;; longlines customization
 (setq longlines-wrap-follows-window-size t)
+
+;; better line wrapping
+(global-visual-line-mode 1)
+
+;; kill ring browsing
+;; browse-kill-ring.el http://www.emacswiki.org/emacs/download/browse-kill-ring.el
+;; browse-kill-ring+.el http://www.emacswiki.org/emacs/download/browse-kill-ring%2b.el
+(require 'browse-kill-ring)
+(require 'browse-kill-ring+)
+(browse-kill-ring-default-keybindings)
 
 ;; When not using X, don't show the menu
 (if (not window-system)
@@ -94,6 +129,9 @@
 ; http://trey-jackson.blogspot.com/2007/12/emacs-tip-5-hippie-expand.html
 (global-set-key (kbd "M-/") 'hippie-expand)
 (define-key minibuffer-local-map (kbd "C-<tab>") 'hippie-expand)
+(eval-after-load "hippie-exp"
+  '(setq hippie-expand-try-functions-list
+         (remove 'try-expand-line hippie-expand-try-functions-list)))
 
 ; add imenu
 (defun try-to-add-imenu ()
@@ -152,9 +190,16 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
+;; highlight URLs in comments/strings
+(add-hook 'find-file-hooks 'goto-address-prog-mode)
+
 ;; Make a passable attempt at using UTF-8 in buffers
 (setq default-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
 ;; encoding
 (modify-coding-system-alist 'file "\\.*\\'" 'utf-8)
 
@@ -223,13 +268,6 @@
       (message "Killed %i dired buffer(s)." count ))))
 
 (define-key bs-mode-map (kbd "D D") 'kill-all-dired-buffers)
-
-;; look ma, I can do full screen too!
-(defun toggle-fullscreen ()
-  (interactive)
-  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
-                                           nil
-                                           'fullboth))) 
 
 ;; hyde note
 (defun hyde-new-note()
