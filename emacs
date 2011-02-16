@@ -109,10 +109,10 @@
 (cua-selection-mode t)
 
 ;; longlines customization
-(setq longlines-wrap-follows-window-size t)
+;(setq longlines-wrap-follows-window-size t)
 
 ;; better line wrapping
-(global-visual-line-mode 1)
+;(global-visual-line-mode 1)
 
 ;; kill ring browsing
 ;; browse-kill-ring.el http://www.emacswiki.org/emacs/download/browse-kill-ring.el
