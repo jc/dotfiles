@@ -2,7 +2,7 @@
 (setq debug-on-error nil)
 (setq inhibit-startup-message t)
 (setq user-full-name "James Clarke")
-(setq user-mail-address "clarkeje@gmail.com")
+(setq user-mail-address "james@jamesclarke.net")
 
 ;;assumes erc installed via macports
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/erc")
