@@ -34,6 +34,10 @@
 ;; magit https://github.com/philjackson/magit
 (require 'magit)
 
+(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/thrift.el")
+(load "thrift")
+(require 'thrift-mode)
+
 ;; dsvn
 ;; http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el
 (autoload 'svn-status "dsvn" "Run `svn status'." t)
