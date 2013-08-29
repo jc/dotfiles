@@ -8,13 +8,9 @@
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/erc")
 (require 'erc-auto)
 
-;;assume color-theme.el installed via macports
-(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/color-theme-6.6.0")
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-gnome2)))
+;; https://github.com/Flowdalic/zenburn-emacs
+(add-to-list 'custom-theme-load-path "/opt/local/share/emacs/site-lisp/emacs-color-themes")
+(load-theme 'zenburn t)
 
 ;;flyspell text modes assumes aspell installed via macports
 (setq-default ispell-program-name "/opt/local/bin/aspell")
@@ -27,16 +23,11 @@
 (require 'git)
 (require 'git-blame)
 
-;;gist assumes https://github.com/defunkt/gist.el
-(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/gist.el")
-(require 'gist)
-
 ;; magit https://github.com/philjackson/magit
 (require 'magit)
 
-(add-to-list 'load-path "/opt/local/share/emacs/site-lisp/thrift.el")
-(load "thrift")
-(require 'thrift-mode)
+;; ess emacs speaks statistics. port install ess +emacs_app
+;; (require 'ess-site)
 
 ;; dsvn
 ;; http://svn.apache.org/repos/asf/subversion/trunk/contrib/client-side/emacs/dsvn.el
@@ -53,6 +44,8 @@
 ;; simplenote https://github.com/cefstat/simplenote.el
 (add-to-list 'load-path "/opt/local/share/emacs/site-lisp/simplenote.el")
 (require 'simplenote)
+(setq simplenote-email "james@jamesclarke.net")
+(setq simplenote-password nil)
 (simplenote-setup)
 
 ;; auto revert modified files
@@ -67,6 +60,27 @@
 (setq auto-mode-alist
    (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
+(add-to-list 'auto-mode-alist '("\\.text" .text-mode))
+
+;; textile-minor-mode https://code.google.com/p/textile-minor-mode/
+(require 'textile-minor-mode)
+(setq auto-mode-alist
+   (cons '("\\.text" . textile-minor-mode) auto-mode-alist))
+
+;; org-mode key bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(define-key global-map "\C-cj"
+  (lambda () (interactive) (org-capture nil "j")))
+;; org-mode templates
+(setq org-capture-templates
+      '(("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+         "* %?\n Written %U\n  %i")
+        ("l" "Journal with link back" entry (file+datetree "~/Dropbox/org/journal.org")
+         "* %?\n Written %U\n  %i\n  %a")))
+(setq org-export-html-style-include-default nil)
 ;;assumes auctex installed
 (require 'tex-site)
 
@@ -107,7 +121,7 @@
 (setq comint-prompt-read-only)
 
 ;; cua mode customization
-(cua-mode t)
+;;(cua-mode t)
 ;(setq cua-enable-cua-keys nil)
 (setq cua-highlight-region-shift-only t) ;; no transient mark mode
 (cua-selection-mode t)
@@ -129,8 +143,8 @@
 (if (not window-system)
     (menu-bar-mode 0))
 
-; http://www.emacswiki.org/emacs/DynamicAbbreviations
-; http://trey-jackson.blogspot.com/2007/12/emacs-tip-5-hippie-expand.html
+;; http://www.emacswiki.org/emacs/DynamicAbbreviations
+;; http://trey-jackson.blogspot.com/2007/12/emacs-tip-5-hippie-expand.html
 (global-set-key (kbd "M-/") 'hippie-expand)
 (define-key minibuffer-local-map (kbd "C-<tab>") 'hippie-expand)
 (eval-after-load "hippie-exp"
@@ -285,3 +299,64 @@
   (insert "\n{% endblock %}")
   (forward-line -3)
 )
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("8c96f97245f2a4ea4d3b27b8ec5b7bfe213655239b7030e56d3402092bbaecd0" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
+ '(erc-email-userid "jclarke")
+ '(erc-nick "jamesclarke")
+ '(erc-user-full-name "James Clarke")
+ '(markdown-xhtml-header-content "  <style type=\"text/css\"> 
+body {
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #252519;
+  margin: 0; padding: 0;
+}
+a {
+  color: #261a3b;
+}
+  a:visited {
+    color: #261a3b;
+  }
+p {
+  margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 40px 0 15px 0;
+}
+h3, h4, h5, h6 {
+    margin-top: 20px;
+  }
+
+.docs {     
+    max-width: 800px;
+    padding: 10px 25px 1px 50px;
+    vertical-align: top;
+    text-align: left;
+    }
+.docs pre {
+      margin: 15px 0 15px;
+      padding-left: 15px;
+    }
+
+.docs code {
+      background: #f8f8ff;
+      border: 1px solid #dedede;
+      font-size: 14px;
+      padding: 0 0.2em;
+    }
+
+.docs pre code {
+    background: #ffffff;
+    border: none;
+    padding: 0;
+    }
+
+    </style>")
+ '(org-agenda-files (quote ("~/Dropbox/org/journal.org"))))
