@@ -19,12 +19,15 @@
   (add-hook hook (lambda () (flyspell-mode 1))))
 
 ;;git stuff assumes git-core installed via macports
-(add-to-list 'load-path "/opt/local/share/doc/git-core/contrib/emacs")
+(add-to-list 'load-path "/opt/local/share/git-core/contrib/emacs")
 (require 'git)
 (require 'git-blame)
 
 ;; magit https://github.com/philjackson/magit
 (require 'magit)
+
+;; web-mode.el http://web-mode.org/
+(require 'web-mode)
 
 ;; ess emacs speaks statistics. port install ess +emacs_app
 ;; (require 'ess-site)
